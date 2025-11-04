@@ -14,17 +14,18 @@ var Version = "UNKNOWN"
 
 const (
 	// Help as printed with -help option
-	Help = `unix2iso [-h] [-v] unix
+	Help = `unix2iso [-h] [-v] [-r] unix
 Convert UNIX timestamps to ISO 8601 format:
--help       To print this help
--version    To print version
-unix       UNIX timestamp to convert`
+-h     To print this help
+-v     To print version
+-r     To print human readable format
+unix   UNIX timestamp to convert`
 )
 
 func main() {
-	help := flag.Bool("help", false, "Print help")
-	version := flag.Bool("version", false, "Print version")
-	human := flag.Bool("h", false, "Print human readable format")
+	help := flag.Bool("h", false, "Print help")
+	version := flag.Bool("v", false, "Print version")
+	human := flag.Bool("r", false, "Print human readable format")
 	flag.Parse()
 	if *help {
 		fmt.Println(Help)
