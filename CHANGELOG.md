@@ -1,5 +1,9 @@
 # Unix2iso
 
+## 2026-01-08 : 1.1.0
+
+- Add microseconds and milliseconds support
+
 ## 2025-11-04 : 1.0.1
 
 - Fix documentation

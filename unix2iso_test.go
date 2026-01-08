@@ -18,7 +18,7 @@ func TestUnix2iso(t *testing.T) {
 		{unix: 1672531199, human: true, want: "2022-12-31 23:59:59 UTC"},
 	}
 	for _, tt := range tests {
-		got := Unix2iso(tt.unix, tt.human)
+		got := Unix2iso(tt.unix, tt.human, false, false)
 		if got != tt.want {
 			t.Errorf("Unix2iso(%d, %v) = %q; want %q", tt.unix, tt.human, got, tt.want)
 		}

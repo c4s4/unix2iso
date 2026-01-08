@@ -14,11 +14,13 @@ var Version = "UNKNOWN"
 
 const (
 	// Help as printed with -help option
-	Help = `unix2iso [-h] [-v] [-r] unix
+	Help = `unix2iso [-h] [-v] [-r] [-m] [-u] unix
 Convert UNIX timestamps to ISO 8601 format:
 -h     To print this help
 -v     To print version
 -r     To print human readable format
+-m     If unix time is in milliseconds
+-u     If unix time is in microseconds
 unix   UNIX timestamp to convert`
 )
 
@@ -26,6 +28,8 @@ func main() {
 	help := flag.Bool("h", false, "Print help")
 	version := flag.Bool("v", false, "Print version")
 	human := flag.Bool("r", false, "Print human readable format")
+	ms := flag.Bool("m", false, "If unix time is in milliseconds")
+	us := flag.Bool("u", false, "If unix time is in microseconds")
 	flag.Parse()
 	if *help {
 		fmt.Println(Help)
@@ -46,12 +50,19 @@ func main() {
 		fmt.Println(Help)
 		os.Exit(1)
 	}
-	iso := Unix2iso(unix, *human)
+	iso := Unix2iso(unix, *human, *ms, *us)
 	fmt.Println(iso)
 }
 
-func Unix2iso(unix int64, human bool) string {
-	iso := time.Unix(unix, 0).UTC().Format("2006-01-02T15:04:05Z")
+func Unix2iso(unix int64, human bool, ms bool, us bool) string {
+	var iso string
+	if us {
+		iso = time.UnixMicro(unix).UTC().Format("2006-01-02T15:04:05.000000Z")
+	} else if ms {
+		iso = time.UnixMilli(unix).UTC().Format("2006-01-02T15:04:05.000Z")
+	} else {
+		iso = time.Unix(unix, 0).UTC().Format("2006-01-02T15:04:05Z")
+	}
 	if human {
 		iso = strings.Replace(iso, "T", " ", 1)
 		iso = strings.Replace(iso, "Z", " UTC", 1)
